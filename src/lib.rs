@@ -1,29 +1,25 @@
-//! A template for creating Rust open-source repo on GitHub
-#![cfg_attr(not(any(feature = "std", test)), no_std)]
-#![cfg_attr(docsrs, feature(doc_cfg))]
-#![cfg_attr(docsrs, allow(unused_attributes))]
-#![deny(missing_docs)]
+//! Concurrent stacks.
+//!
+//! This crate provides concurrent stacks that can be shared among threads:
+//!
+//! * [`ArrayStack`], a bounded stack that allocates a fixed-capacity buffer on construction.
+#![no_std]
+#![doc(test(
+    no_crate_inject,
+    attr(
+        deny(warnings, rust_2018_idioms, single_use_lifetimes),
+        allow(dead_code, unused_assignments, unused_variables)
+    )
+))]
+#![warn(missing_docs, unsafe_op_in_unsafe_fn)]
 
-#[cfg(all(not(feature = "std"), feature = "alloc"))]
-extern crate alloc as std;
-
-#[cfg(all(feature = "std", not(feature = "alloc")))]
+#[cfg(all(feature = "alloc", target_has_atomic = "ptr"))]
+extern crate alloc;
+#[cfg(feature = "std")]
 extern crate std;
 
-#[cfg(all(feature = "std", feature = "alloc"))]
-extern crate std;
+#[cfg(all(feature = "alloc", target_has_atomic = "ptr"))]
+mod array_stack;
 
-/// template
-pub fn it_works() -> usize {
-  4
-}
-
-#[cfg(test)]
-mod tests {
-  use super::*;
-
-  #[test]
-  fn test_works() {
-    assert_eq!(it_works(), 4);
-  }
-}
+#[cfg(all(feature = "alloc", target_has_atomic = "ptr"))]
+pub use crate::array_stack::ArrayStack;

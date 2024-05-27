@@ -1,40 +1,30 @@
 [package]
-name = "template-rs"
-version = "0.1.6"
+name = "arraystack"
+version = "0.1.0"
 edition = "2021"
-repository = "https://github.com/al8n/template-rs"
-homepage = "https://github.com/al8n/template-rs"
-documentation = "https://docs.rs/template-rs"
-description = "A template for creating Rust open-source repo on GitHub"
-license = "MIT/Apache-2.0"
-rust-version = "1.73"
-
-[[bench]]
-path = "benches/foo.rs"
-name = "foo"
-harness = false
+rust-version = "1.60"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/crossbeam-rs/crossbeam"
+homepage = "https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-stack"
+description = "Concurrent stacks"
+keywords = ["stack", "lock-free"]
+categories = ["concurrency", "data-structures", "no-std"]
 
 [features]
 default = ["std"]
+
+# Enable to use APIs that require `std`.
+# This is enabled by default.
+std = ["alloc", "crossbeam-utils/std"]
+
+# Enable to use APIs that require `alloc`.
+# This is enabled by default and also enabled if the `std` feature is enabled.
+#
+# NOTE: Disabling both `std` *and* `alloc` features is not supported yet.
 alloc = []
-std = []
 
 [dependencies]
+crossbeam-utils = { version = "0.8", default-features = false }
 
 [dev-dependencies]
-criterion = "0.5"
-tempfile = "3"
-
-[profile.bench]
-opt-level = 3
-debug = false
-codegen-units = 1
-lto = 'thin'
-incremental = false
-debug-assertions = false
-overflow-checks = false
-rpath = false
-
-[package.metadata.docs.rs]
-all-features = true
-rustdoc-args = ["--cfg", "docsrs"]
+rand = "0.8"
