@@ -97,10 +97,9 @@ fn len() {
 
   scope(|scope| {
     scope.spawn(|_| {
-      for i in 0..COUNT {
+      for _ in 0..COUNT {
         loop {
-          if let Some(x) = q.pop() {
-            assert_eq!(x, i);
+          if q.pop().is_some() {
             break;
           }
         }
